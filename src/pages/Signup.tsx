@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../components";
+import { useState } from "react";
 
 function Signup() {
     const navigate = useNavigate();
+        const [isLoading, setIsLoading] = useState<boolean>(false);
 
     return (
-      <div className="relative flex min-h-screen items-center justify-center bg-gray-900">
-   
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('https://i.pinimg.com/736x/57/27/d8/5727d8376807c845b4ac0fff66426c13.jpg')" }}
-        ></div>
+      <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-[#C33764] via-[#1D2671]">
         
         <div className="relative z-10 w-full max-w-md min-h-[500px] flex flex-col justify-center p-8 bg-white rounded-lg shadow-lg">
           <h2 className="text-center text-2xl font-bold text-gray-900">Create an Account</h2>
@@ -71,11 +69,11 @@ function Signup() {
             </div>
   
             <button
-              type="submit"
-              className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Sign Up
-            </button>
+  type="submit"
+  className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-center"
+>
+  {!isLoading ? "Signup" : <Loader />}
+</button>
           </form>
   
           <p className="mt-4 text-center text-sm text-gray-600">

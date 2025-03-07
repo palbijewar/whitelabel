@@ -1,4 +1,3 @@
-import Login from "./login";
-import Signup from "./Signup";
+import Loader from "./Loader";
 
-export {Login, Signup}
+export {Loader}
