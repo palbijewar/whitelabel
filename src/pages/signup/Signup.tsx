@@ -1,11 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { Loader } from "../components";
+import { Loader } from "../../components";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { signUpTypes } from "./types/types";
 
 function Signup() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+     const [formData, setFormData] = useState<signUpTypes>({
+        email: "",
+        password: "",
+        name:"",
+        phoneNumber:"",
+      });
+
+      const submitHandler = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(formData);
+        
+        setIsLoading(true);
+        // try {
+        //   const response = await loginService(formData);
+        //   if (response?.status === "success") {
+        //     localStorage.setItem("access_token", response?.data?.access_token);
+        //     router.push("/");
+        //   }
+        // } catch (error: unknown) {
+        //   toast.error(error?.response?.data?.message);
+        // } finally {
+        //   setIsLoading(false);
+        // }
+      };
 
     return (
       <motion.div 
@@ -31,9 +56,12 @@ function Signup() {
               <input
                 id="fullName"
                 name="fullName"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                }
               />
             </motion.div>
   
@@ -44,9 +72,12 @@ function Signup() {
               <input
                 id="phoneNumber"
                 name="phoneNumber"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 type="tel"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                }
               />
             </motion.div>
             
@@ -57,10 +88,13 @@ function Signup() {
               <input
                 id="email"
                 name="email"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 type="email"
                 required
                 autoComplete="email"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                }
               />
             </motion.div>
   
@@ -71,15 +105,19 @@ function Signup() {
               <input
                 id="password"
                 name="password"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 type="password"
                 required
                 autoComplete="new-password"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                }
               />
             </motion.div>
   
             <motion.button
               type="submit"
+              onClick={submitHandler}
               className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

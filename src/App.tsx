@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ForgotPassword, Login, Signup } from "./pages"
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import Signup from "./pages/signup/Signup";
+import Login from "./pages/login/Login";
 
 function App() {
   return (
