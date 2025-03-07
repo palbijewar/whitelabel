@@ -1,20 +1,23 @@
+import { useNavigate } from "react-router-dom";
+
 function Login() {
+    const navigate = useNavigate();
+
     return (
       <div className="relative flex min-h-screen items-center justify-center bg-gray-900">
-
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-50"
+          className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{ backgroundImage: "url('https://i.pinimg.com/736x/57/27/d8/5727d8376807c845b4ac0fff66426c13.jpg')" }}
         ></div>
         
-        <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <div className="relative z-10 w-full max-w-md min-h-[500px] flex flex-col justify-center p-8 bg-white rounded-lg shadow-lg">
           <h2 className="text-center text-2xl font-bold text-gray-900">Let's Get Started</h2>
           <p className="text-center text-gray-600">Sign in to continue to PrimeAlgo Tech.</p>
 
-            <div className="mt-4 p-4 bg-gray-100 border-l-4 border-indigo-600 rounded-md">
-          <p className="text-sm font-semibold text-gray-800">Note!</p>
-          <p className="text-sm text-gray-600">Customer Support: +91-8602988771</p>
-        </div>
+          <div className="mt-4 p-4 bg-gray-100 border-l-4 border-indigo-600 rounded-md">
+            <p className="text-sm font-semibold text-gray-800">Note!</p>
+            <p className="text-sm text-gray-600">Customer Support: +91-8602988771</p>
+          </div>
   
           <form className="mt-6 space-y-4">
             <div>
@@ -59,11 +62,11 @@ function Login() {
           </form>
   
           <p className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Register
-            </a>
-          </p>
+          Don't have an account?{' '}
+          <button onClick={() => navigate("/register")} className="font-semibold text-indigo-600 hover:text-indigo-500">
+          Register
+          </button>
+        </p>
         </div>
       </div>
     );

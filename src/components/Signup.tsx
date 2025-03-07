@@ -1,13 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 function Signup() {
+    const navigate = useNavigate();
+
     return (
       <div className="relative flex min-h-screen items-center justify-center bg-gray-900">
    
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-50"
+          className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{ backgroundImage: "url('https://i.pinimg.com/736x/57/27/d8/5727d8376807c845b4ac0fff66426c13.jpg')" }}
         ></div>
         
-        <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <div className="relative z-10 w-full max-w-md min-h-[500px] flex flex-col justify-center p-8 bg-white rounded-lg shadow-lg">
           <h2 className="text-center text-2xl font-bold text-gray-900">Create an Account</h2>
           <p className="text-center text-gray-600">Sign up to get started with PrimeAlgo Tech.</p>
           
@@ -75,11 +79,11 @@ function Signup() {
           </form>
   
           <p className="mt-4 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-             Login
-            </a>
-          </p>
+          Already have an account?{' '}
+          <button onClick={() => navigate("/login")} className="font-semibold text-indigo-600 hover:text-indigo-500">
+            Login
+          </button>
+        </p>
         </div>
       </div>
     );
