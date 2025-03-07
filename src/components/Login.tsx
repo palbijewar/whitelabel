@@ -11,7 +11,7 @@ function Login() {
           <h2 className="text-center text-2xl font-bold text-gray-900">Let's Get Started</h2>
           <p className="text-center text-gray-600">Sign in to continue to PrimeAlgo Tech.</p>
 
-          <div className="mt-4 p-4 bg-gray-100 border-l-4 border-indigo-600 rounded-md">
+            <div className="mt-4 p-4 bg-gray-100 border-l-4 border-indigo-600 rounded-md">
           <p className="text-sm font-semibold text-gray-800">Note!</p>
           <p className="text-sm text-gray-600">Customer Support: +91-8602988771</p>
         </div>

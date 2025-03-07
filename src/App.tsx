@@ -1,13 +1,16 @@
-import { Login } from "./components"
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Login, Signup } from "./components"
 
 function App() {
-
   return (
-    <>
-     <Login/>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
+
