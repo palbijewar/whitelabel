@@ -1,12 +1,12 @@
 import { isValidEmail, isValidPassword } from "../../../validation/formValidation";
 
 interface FormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 interface ErrorState {
-  email?: boolean;
+  username?: boolean;
   password?: boolean;
 }
 
@@ -15,7 +15,7 @@ export const loginValidation = (
   setError: React.Dispatch<React.SetStateAction<ErrorState>>
 ) => {
   const newErrorMsg: ErrorState = {};
-  newErrorMsg["email"] = !isValidEmail(formData["email"]);
+  newErrorMsg["username"] = !isValidEmail(formData["username"]);
   newErrorMsg["password"] = !isValidPassword(formData["password"]);
   const isValid = Object.values(newErrorMsg).every(error => !error);
   setError((prevErrorMsg) => ({ ...prevErrorMsg, ...newErrorMsg }));

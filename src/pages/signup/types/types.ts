@@ -1,7 +1,8 @@
 export interface signUpTypes {
     email: string;
     name: string;
-    phoneNumber:string;
+    mobile:string;
     password: string;
+    user_type:string;
   }
   

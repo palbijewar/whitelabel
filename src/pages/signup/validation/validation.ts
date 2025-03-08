@@ -4,14 +4,16 @@ interface FormData {
   email: string;
   password: string;
   name: string;
-  phoneNumber: string;
+  mobile: string;
+  user_type:string;
 }
 
 interface ErrorState {
   email?: boolean;
   password?: boolean;
   name?: boolean;
-  phoneNumber?: boolean;
+  mobile?: boolean;
+  user_type?:string;
 }
 
 export const signUpValidation = (
@@ -23,7 +25,8 @@ export const signUpValidation = (
   newErrorMsg["email"] = !isValidEmail(formData["email"]);
   newErrorMsg["password"] = !isValidPassword(formData["password"]);
   newErrorMsg["name"] = formData["name"].trim().length === 0;
-  newErrorMsg["phoneNumber"] = !/^\d{10}$/.test(formData["phoneNumber"]);
+  newErrorMsg["mobile"] = !/^\d{10}$/.test(formData["mobile"]);
+  console.log({newErrorMsg});
   
   const isValid = Object.values(newErrorMsg).every(error => !error);
   setError((prevErrorMsg) => ({ ...prevErrorMsg, ...newErrorMsg }));
