@@ -5,6 +5,7 @@ import { Loader } from "../../components";
 import { loginTypes } from "./types/types";
 import { loginService } from "./services";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +25,12 @@ function Login() {
         navigate("/dashboard");
       }
     } catch (error: unknown) {
-      toast.error(error?.response?.data?.message);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+    } else {
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred.");
+    }
     } finally {
       setIsLoading(false);
     }

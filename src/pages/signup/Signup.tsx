@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { signUpTypes } from "./types/types";
 import { signUpUser } from "./services";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 function Signup() {
     const navigate = useNavigate();
@@ -16,19 +17,25 @@ function Signup() {
         mobile:"",
         user_type:""
       });
-     
 
       const submitHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        try {
-          const response = await signUpUser(formData);
-          if (response?.status === "success") {
-            localStorage.setItem("access_token", response?.data?.access_token);
-            navigate("/login");
+          event.preventDefault();
+          setIsLoading(true);
+          try {
+              const response = await signUpUser(formData);
+              if (response?.status === "success") {
+                  localStorage.setItem("access_token", response?.data?.access_token);
+                  navigate("/login");
+              }
+          } catch (error: unknown) {
+              if (error instanceof AxiosError) {
+                  toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+              } else {
+                  console.error("Unexpected error:", error);
+                  toast.error("An unexpected error occurred.");
+              }
           }
-        } catch (error) {
-          toast.error(error?.response?.data?.message);
-        }
+          setIsLoading(false);
       };
 
     return (
