@@ -3,6 +3,7 @@ import { Loader } from "../../components";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { signUpTypes } from "./types/types";
+import { signUpValidation } from "./validation/validation";
 
 function Signup() {
     const navigate = useNavigate();
@@ -13,11 +14,16 @@ function Signup() {
         name:"",
         phoneNumber:"",
       });
+      const [errorMessage, setErrorMessage] = useState({})
 
       const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData);
-        
+        const isValid = signUpValidation(formData, setErrorMessage);
+        if (!isValid) {
+            alert("Please correct the highlighted errors.");
+            return;
+        }
+        console.log("Form submitted", formData);
         setIsLoading(true);
         // try {
         //   const response = await loginService(formData);

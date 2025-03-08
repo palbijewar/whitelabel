@@ -1,20 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader } from "../../components";
 import { forgotPasswordTypes } from "./types/types";
+import { forgotPasswordValidation } from "./validation/validation";
 
 function ForgotPassword() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
    const [formData, setFormData] = useState<forgotPasswordTypes>({
       email: "",
     });
-    const submitHandler = async (e: React.FormEvent) => {
-      e.preventDefault();
-      console.log(formData);
-      
-      setIsLoading(true);
+    const [errorMessage, setErrorMessage] = useState({})
+    
+      const submitHandler = async (e: React.FormEvent) => {
+        e.preventDefault();
+      const isValid = forgotPasswordValidation(formData, setErrorMessage)
+        if(!isValid){
+          alert(forgotPasswordValidation(formData, setErrorMessage));
+        }
+        console.log(forgotPasswordValidation(formData, setErrorMessage));
+        console.log(formData);
+        
+        setIsLoading(true);
       // try {
       //   const response = await loginService(formData);
       //   if (response?.status === "success") {

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader } from "../../components";
 import { loginTypes } from "./types/types";
+import { loginValidation } from "./validation/validation";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,13 +12,21 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [errorMessage, setErrorMessage] = useState({})
+
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+  const isValid = loginValidation(formData, setErrorMessage)
+    if(!isValid){
+      alert(loginValidation(formData, setErrorMessage));
+    }
+    console.log(loginValidation(formData, setErrorMessage));
     console.log(formData);
     
     setIsLoading(true);
     // try {
-    //   const response = await loginService(formData);
+    //   const response = await loginService(formData);  
     //   if (response?.status === "success") {
     //     localStorage.setItem("access_token", response?.data?.access_token);
     //     router.push("/");
