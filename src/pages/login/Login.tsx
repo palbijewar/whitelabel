@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader } from "../../components";
 import { loginTypes } from "./types/types";
+import { loginService } from "./services";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -14,45 +16,19 @@ function Login() {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.username || !formData.password) {
-        alert("Please fill in all required fields.");
-        return;
-    }
-
-    console.log("Submitting formData:", formData); 
-
-    const formBody = new URLSearchParams();
-    formBody.append("username", formData.username.trim());
-    formBody.append("password", formData.password.trim());
-
     setIsLoading(true);
     try {
-        const response = await fetch("http://182.70.249.152:5000/api/users/token", {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: formBody.toString(),  
-        });
-
-        const data = await response.json();
-        console.log("API Response:", data);
-
-        if (data.status === "success") {
-          localStorage.setItem("access_token", data.data.access_token);
-          localStorage.setItem("user_id", data.data.user_id); 
-          navigate("/dashboard");
-        } else {
-            alert(data.message || "Login failed");
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-        alert("An error occurred. Please try again.");
+      const response = await loginService(formData);
+      if (response?.status === "success") {
+        localStorage.setItem("access_token", response?.data?.access_token);
+        navigate("/dashboard");
+      }
+    } catch (error: unknown) {
+      toast.error(error?.response?.data?.message);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
 
   return (
     <motion.div
