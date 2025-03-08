@@ -8,6 +8,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsOpen(false);
+    localStorage.removeItem("access_token");
     navigate("/login");
   };
 
