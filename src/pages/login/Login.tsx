@@ -40,8 +40,9 @@ function Login() {
         console.log("API Response:", data);
 
         if (data.status === "success") {
-            localStorage.setItem("access_token", data.data.access_token);
-            navigate("/dashboard");
+          localStorage.setItem("access_token", data.data.access_token);
+          localStorage.setItem("user_id", data.data.user_id); 
+          navigate("/dashboard");
         } else {
             alert(data.message || "Login failed");
         }
