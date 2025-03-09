@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 
 
 function Dashboard() {
-  const [saveTheme] = useUserTheme();
+  const [theme, saveTheme] = useUserTheme();
 const getDetails = async () => {
   try {
     const response = await getUserDetails()
@@ -33,7 +33,7 @@ useEffect(()=>{
   return (
     <div>
     <Navbar />
-    <div className="p-4">Dashboard</div>
+    <div className="p-4">${theme?.template?.primary}</div>
   </div>
   )
 }

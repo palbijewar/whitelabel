@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { Navbar } from "../../components";
+import { Loader, Navbar } from "../../components";
 import { useNavigate } from "react-router-dom";
+import useUserTheme from "../../hooks/useGetTheme";
+import { profileUpdateDetails } from "./services";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 function Profile() {
   const navigate = useNavigate();
@@ -10,7 +14,7 @@ function Profile() {
     mobile: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-
+  const [theme] = useUserTheme();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -91,44 +95,32 @@ function Profile() {
     fetchUserData();
     }, [navigate]);
   
-  const handleUpdateProfile = async () => {
-    setIsLoading(true);
-    try {
-        const token = localStorage.getItem("access_token");
-        const userId = localStorage.getItem("user_id");
-
-        if (!token || !userId) {
-            alert("Token or User ID missing. Please log in again.");
-            navigate("/login");
-            return;
-        }
-
-        const response = await fetch(`http://182.70.249.152:5000/api/users/${userId}`, { 
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                mobile: formData.mobile,
-                tag: "premium",
-            }),
-        });
-
-        const data = await response.json();
-        if (data.status === "success") {
-            alert("Profile updated successfully!");
-        } else {
-            alert("Profile update failed: " + data.message);
-        }
-    } catch (error) {
-        console.error("Error updating profile:", error);
-        alert("An error occurred while updating profile.");
-    } finally {
-        setIsLoading(false);
-    }
-};
+    const handleUpdateProfile = async () => {
+      setIsLoading(true);
+      try {
+          const token = localStorage.getItem("access_token");
+          const userId = localStorage.getItem("user_id");
+  
+          if (!token || !userId) {
+              toast.error("Token or User ID missing. Please log in again.");
+              navigate("/login");
+              return;
+          }
+  
+          await profileUpdateDetails(userId, formData);
+          toast.success("Profile updated successfully.");
+      } catch (error) {
+          if (error instanceof AxiosError) {
+              toast.error(error.response?.data?.message || "Profile update failed. Please try again.");
+          } else {
+              console.error("Unexpected error:", error);
+              toast.error("An unexpected error occurred.");
+          }
+      } finally {
+          setIsLoading(false)
+      }
+  };
+  
 
   return (
     <div className="min-h-screen">
@@ -165,10 +157,11 @@ function Profile() {
 
         <button
           onClick={handleUpdateProfile}
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          style={{ backgroundColor: theme?.colors?.primary }}
+          className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow flex items-center justify-center gap-2 text-center cursor-pointer"
           disabled={isLoading}
         >
-          {isLoading ? "Updating..." : "Update Profile"}
+          {!isLoading ? "Update Profile" : <Loader />}
         </button>
       </div>
     </div>
