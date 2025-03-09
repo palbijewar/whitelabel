@@ -26,7 +26,6 @@ function Profile() {
             name: data.data.name,
             email: data.data.email,
             mobile: data.data.mobile,
-            theme: localStorage.getItem("theme") || "light",
           });
         }
       } catch (error) {
