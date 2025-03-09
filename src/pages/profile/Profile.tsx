@@ -5,6 +5,7 @@ import useUserTheme from "../../hooks/useGetTheme";
 import { profileUpdateDetails } from "./services";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie"; 
 
 function Profile() {
   const navigate = useNavigate();
@@ -43,14 +44,14 @@ function Profile() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === "theme") {
-      localStorage.setItem("theme", value);
+      Cookies.set("theme", value);
     }
   };
 
   useEffect(() => {
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem("access_token"); 
+            const token = Cookies.get("access_token"); 
             if (!token) {
                 console.error("No access token found. Redirecting to login...");
                 navigate("/login");
@@ -74,7 +75,7 @@ function Profile() {
                     return;
                 }
 
-                localStorage.setItem("user_id", data.data.user_id.toString());
+                Cookies.set("user_id", data.data.user_id.toString());
                 setFormData({
                     name: data.data.name || "",
                     email: data.data.email || "",
@@ -98,8 +99,8 @@ function Profile() {
     const handleUpdateProfile = async () => {
       setIsLoading(true);
       try {
-          const token = localStorage.getItem("access_token");
-          const userId = localStorage.getItem("user_id");
+          const token = Cookies.get("access_token");
+          const userId = Cookies.get("user_id");
   
           if (!token || !userId) {
               toast.error("Token or User ID missing. Please log in again.");

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import useUserTheme from "../hooks/useGetTheme";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsOpen(false);
-    localStorage.removeItem("access_token");
+    Cookies.remove("access_token");
+    Cookies.remove("host_id");
     navigate("/login");
   };
 

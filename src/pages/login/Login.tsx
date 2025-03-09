@@ -7,12 +7,10 @@ import { loginTypes } from "./types/types";
 import { loginService } from "./services";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import useFetchTheme from "../../hooks/useFetchTheme";
 import { getUserDetails } from "../dashboard/services";
 
 function Login() {
   const navigate = useNavigate();
-  const { theme, loading } = useFetchTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<loginTypes>({ username: "", password: "" });
 
@@ -21,15 +19,10 @@ function Login() {
     setIsLoading(true);
     try {
       const response = await loginService(formData);
-      
+      Cookies.set("access_token", response.data.access_token, { expires: 7 }); 
       if (response?.status === "success") {
-        localStorage.setItem("access_token", response?.data?.access_token);
         const userDetails = await getUserDetails();
-        if (userDetails?.data?.host_id) {
-          Cookies.set("host_id", userDetails?.data?.host_id, { expires: 7 }); 
-          Cookies.set("access_token", response?.data?.access_token, { expires: 7 }); 
-        }
-
+        Cookies.set("host_id", userDetails.data.host_id, { expires: 7 }); 
         navigate("/dashboard");
       }
     } catch (error: unknown) {
@@ -43,15 +36,13 @@ function Login() {
     }
   };
 
-  if (loading) return <Loader />;
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8"
       style={{
-        background: theme.theme === "dark" ? "#1D2671" : theme.colors.secondary,
+        background: "#1D2671" ,
       }}
     >
       <motion.div
@@ -59,7 +50,7 @@ function Login() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
-        <h2 className="text-center text-2xl font-bold" style={{ color: theme.colors.primary }}>
+        <h2 className="text-center text-2xl font-bold" style={{ color: "#1D2671" }}>
           Let's Get Started
         </h2>
         <p className="text-center text-gray-600">Sign in to continue.</p>
@@ -90,7 +81,7 @@ function Login() {
           <motion.button
             type="submit"
             className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-center"
-            style={{ background: theme.colors.primary }}
+            style={{ background: "#1D2671" }}
             whileTap={{ scale: 0.95 }}
           >
             {!isLoading ? "Login" : <Loader />}

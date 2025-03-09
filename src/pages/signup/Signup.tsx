@@ -6,15 +6,12 @@ import { signUpTypes } from "./types/types";
 import { signUpUser } from "./services";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import useFetchTheme from "../../hooks/useFetchTheme";
 import { loginService } from "../login/services";
 import { getUserDetails } from "../dashboard/services";
 import Cookies from "js-cookie"; 
 
 function Signup() {
     const navigate = useNavigate();
-    
-    const { theme, loading } = useFetchTheme();
     const defaultTheme = {
         theme: "dark",
         colors: {
@@ -28,7 +25,7 @@ function Signup() {
         }
     };
 
-    const currentTheme = theme?.colors ? theme : defaultTheme;
+    const currentTheme = defaultTheme;
     const isDarkMode = currentTheme.theme === "dark";
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,7 +49,6 @@ function Signup() {
                     password: formData.password
                 });
 
-                localStorage.setItem("access_token", loginResponse?.data?.access_token);
                 const userDetails = await getUserDetails();
                 if (userDetails?.data?.host_id) {
                   Cookies.set("host_id", userDetails?.data?.host_id, { expires: 7 }); 
@@ -73,8 +69,6 @@ function Signup() {
             setIsLoading(false);
         }
     };
-
-    if (loading) return <Loader />;
 
     return (
         <motion.div

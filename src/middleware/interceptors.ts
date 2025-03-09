@@ -3,6 +3,7 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
+import Cookies from "js-cookie";
 
 const API_BASE_URL = "http://182.70.249.152:5000/api";
 
@@ -12,7 +13,7 @@ const interceptorInstance = axios.create({
 
 interceptorInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const token = localStorage.getItem("access_token");
+    const token = Cookies.get("access_token");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -1,41 +1,20 @@
-import { useEffect } from "react"
-import { Navbar } from "../../components"
-import { getUserDetails, getUserTheme } from "./services"
-import toast from "react-hot-toast"
-import useUserTheme from "../../hooks/useGetTheme";
-import { AxiosError } from "axios";
-
+import { useEffect } from "react";
+import { Navbar } from "../../components";
+import useFetchTheme from "../../hooks/useFetchTheme";
 
 function Dashboard() {
-  const [theme, saveTheme] = useUserTheme();
-const getDetails = async () => {
-  try {
-    const response = await getUserDetails()
-    if(response?.status=="success"){
-      const themeData = await getUserTheme(response?.data?.host_id);
-      const parsedTheme = themeData?.data?.template ? JSON.parse(themeData?.data?.template) : null;
-      saveTheme(parsedTheme);
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
-    } else {
-      console.error("Unexpected error:", error);
-      toast.error("An unexpected error occurred.");
-    }
-  }
-}
+  const { theme } = useFetchTheme();
 
-useEffect(()=>{
- getDetails()
-},[])
+  useEffect(() => {
+    console.log("useFetchTheme", theme);
+  }, []);
 
   return (
     <div>
-    <Navbar />
-    <div className="p-4">${theme?.template?.primary}</div>
-  </div>
-  )
+      <Navbar />
+      <div className="p-4">{theme?.template?.primary}</div>
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

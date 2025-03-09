@@ -5,13 +5,14 @@ import Signup from "./pages/signup/Signup";
 import Login from "./pages/login/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Profile from "./pages/profile/Profile";
+import Cookies from "js-cookie"; 
 
 /**
  * Checks if the user is authenticated based on the presence of an access token.
  * @returns {boolean} - True if authenticated, otherwise false.
  */
 const isAuthenticated = (): boolean => {
-  return localStorage.getItem("access_token") !== null;
+  return Cookies.get("access_token") ? true : false;
 };
 
 // Define prop types
