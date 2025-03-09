@@ -2,18 +2,12 @@ import { useState, useEffect } from "react";
 import { Navbar } from "../../components";
 import { useNavigate } from "react-router-dom";
 
-const themes = {
-  light: "bg-white text-black",
-  dark: "bg-gray-900 text-white",
-};
-
 function Profile() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
-    theme: localStorage.getItem("theme") || "light",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,7 +76,6 @@ function Profile() {
                     name: data.data.name || "",
                     email: data.data.email || "",
                     mobile: data.data.mobile || "",
-                    theme: localStorage.getItem("theme") || "light",
                 });
             } else {
                 console.error("Failed to fetch user data:", data.message);
@@ -139,7 +132,7 @@ function Profile() {
 };
 
   return (
-    <div className={`min-h-screen ${themes[formData.theme as keyof typeof themes]}`}>
+    <div className="min-h-screen">
       <Navbar />
       <div className="max-w-md mx-auto bg-gray-100 p-6 rounded-lg shadow-lg mt-6">
         <h2 className="text-2xl font-bold mb-4">Profile</h2>
@@ -170,17 +163,6 @@ function Profile() {
           onChange={handleChange}
           className="w-full p-2 mb-4 border rounded"
         />
-
-        <label className="block mb-2">Select Theme</label>
-        <select
-          name="theme"
-          value={formData.theme}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-        >
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
 
         <button
           onClick={handleUpdateProfile}
