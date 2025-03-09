@@ -80,7 +80,7 @@ function Login() {
 
           <motion.button
             type="submit"
-            className="w-full rounded-md px-4 py-2 text-white font-semibold shadow"
+            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-center"
             style={{ background: theme.colors.primary }}
             whileTap={{ scale: 0.95 }}
           >

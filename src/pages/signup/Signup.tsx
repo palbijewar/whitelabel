@@ -7,6 +7,7 @@ import { signUpUser } from "./services";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import useFetchTheme from "../../hooks/useFetchTheme";
+import { loginService } from "../login/services";
 
 function Signup() {
     const navigate = useNavigate();
@@ -20,15 +21,27 @@ function Signup() {
         mobile: "",
         user_type: ""
     });
-
+    
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
+        
         try {
-            const response = await signUpUser(formData);
-            if (response?.status === "success") {
-                localStorage.setItem("access_token", response?.data?.access_token);
-                navigate("/login");
+            const signupResponse = await signUpUser(formData);
+            
+            if (signupResponse?.status === "success") {
+                const loginResponse = await loginService({
+                    username: formData.email, 
+                    password: formData.password
+                });
+    
+                if (loginResponse?.status === "success") {
+
+                    localStorage.setItem("access_token", loginResponse?.data?.access_token);
+                    navigate("/dashboard"); 
+                } else {
+                    toast.error("Login failed. Please try manually.");
+                }
             }
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
@@ -37,9 +50,10 @@ function Signup() {
                 console.error("Unexpected error:", error);
                 toast.error("An unexpected error occurred.");
             }
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
-    };
+    };    
 
     if (loading) return <Loader />;
 
