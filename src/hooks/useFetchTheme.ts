@@ -37,7 +37,7 @@ export default function useFetchTheme() {
     const fetchTheme = async () => {
       try {
         const host_id = Cookies.get("host_id");
-        const token = localStorage.getItem("access_token"); 
+        const token = Cookies.get("access_token"); 
 
         console.log({ host_id, token });
 
