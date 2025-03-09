@@ -27,10 +27,10 @@ function Login() {
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data?.message || "Signup failed. Please try again.");
-    } else {
+      } else {
         console.error("Unexpected error:", error);
         toast.error("An unexpected error occurred.");
-    }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -41,23 +41,23 @@ function Login() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-[#C33764] via-[#1D2671]"
+      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#C33764] via-[#1D2671] px-4 sm:px-6 lg:px-8"
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-md min-h-[500px] flex flex-col justify-center p-8 bg-white rounded-lg shadow-lg"
+        className="relative z-10 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md min-h-[500px] flex flex-col justify-center p-6 sm:p-8 bg-white rounded-lg shadow-lg"
       >
         <motion.h2
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-center text-2xl font-bold text-gray-900"
+          className="text-center text-2xl sm:text-3xl font-bold text-gray-900"
         >
           Let's Get Started
         </motion.h2>
-        <p className="text-center text-gray-600">Sign in to continue to PrimeAlgo Tech.</p>
+        <p className="text-center text-gray-600 text-sm sm:text-base">Sign in to continue to PrimeAlgo Tech.</p>
 
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
