@@ -27,3 +27,7 @@ export const signUpUser = async (formData: signUpTypes) => {
   }
 };
 
+
+
+
+

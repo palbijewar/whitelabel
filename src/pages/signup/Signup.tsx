@@ -8,11 +8,29 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import useFetchTheme from "../../hooks/useFetchTheme";
 import { loginService } from "../login/services";
+import { getUserDetails } from "../dashboard/services";
+import Cookies from "js-cookie"; 
 
 function Signup() {
     const navigate = useNavigate();
-    const { theme, loading } = useFetchTheme(); 
     
+    const { theme, loading } = useFetchTheme();
+    const defaultTheme = {
+        theme: "dark",
+        colors: {
+            primary: "#0066cc",
+            secondary: "#f5f5f5",
+            accent: "#ff9900"
+        },
+        fonts: {
+            heading: "Roboto",
+            body: "Open Sans"
+        }
+    };
+
+    const currentTheme = theme?.colors ? theme : defaultTheme;
+    const isDarkMode = currentTheme.theme === "dark";
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formData, setFormData] = useState<signUpTypes>({
         email: "",
@@ -21,24 +39,25 @@ function Signup() {
         mobile: "",
         user_type: ""
     });
-    
+
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
-        
+
         try {
             const signupResponse = await signUpUser(formData);
-            
             if (signupResponse?.status === "success") {
                 const loginResponse = await loginService({
-                    username: formData.email, 
+                    username: formData.email,
                     password: formData.password
                 });
-    
-                if (loginResponse?.status === "success") {
 
-                    localStorage.setItem("access_token", loginResponse?.data?.access_token);
-                    navigate("/dashboard"); 
+                localStorage.setItem("access_token", loginResponse?.data?.access_token);
+                const userDetails = await getUserDetails();
+                if (userDetails?.data?.host_id) {
+                  Cookies.set("host_id", userDetails?.data?.host_id, { expires: 7 }); 
+                  Cookies.set("access_token", loginResponse?.data?.access_token, { expires: 7 }); 
+                  navigate("/dashboard");
                 } else {
                     toast.error("Login failed. Please try manually.");
                 }
@@ -53,28 +72,17 @@ function Signup() {
         } finally {
             setIsLoading(false);
         }
-    };    
-
-    if (loading) return <Loader />;
-
-    const defaultTheme = {
-        theme: "light",
-        colors: {
-            primary: "#0066cc",
-            secondary: "#f5f5f5",
-            accent: "#ff9900"
-        }
     };
 
-    const currentTheme = theme?.colors ? theme : defaultTheme;
-    const isDarkMode = theme?.theme === "dark";
+    if (loading) return <Loader />;
 
     return (
         <motion.div
             className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8"
             style={{
                 backgroundColor: isDarkMode ? "#1A1A1A" : currentTheme.colors.secondary,
-                color: isDarkMode ? "#ffffff" : "#000000"
+                color: isDarkMode ? "#ffffff" : "#000000",
+                fontFamily: currentTheme.fonts.body
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -84,7 +92,8 @@ function Signup() {
                 className="relative z-10 w-full max-w-md min-h-[500px] flex flex-col justify-center p-6 sm:p-8 rounded-lg shadow-lg"
                 style={{
                     backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
-                    color: isDarkMode ? "#ffffff" : "#000000"
+                    color: isDarkMode ? "#ffffff" : "#000000",
+                    fontFamily: currentTheme.fonts.heading
                 }}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

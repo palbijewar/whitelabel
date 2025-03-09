@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie"; 
 import { Loader } from "../../components";
 import { loginTypes } from "./types/types";
 import { loginService } from "./services";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import useFetchTheme from "../../hooks/useFetchTheme";
+import { getUserDetails } from "../dashboard/services";
 
 function Login() {
   const navigate = useNavigate();
@@ -19,8 +21,15 @@ function Login() {
     setIsLoading(true);
     try {
       const response = await loginService(formData);
+      
       if (response?.status === "success") {
         localStorage.setItem("access_token", response?.data?.access_token);
+        const userDetails = await getUserDetails();
+        if (userDetails?.data?.host_id) {
+          Cookies.set("host_id", userDetails?.data?.host_id, { expires: 7 }); 
+          Cookies.set("access_token", response?.data?.access_token, { expires: 7 }); 
+        }
+
         navigate("/dashboard");
       }
     } catch (error: unknown) {
@@ -34,7 +43,7 @@ function Login() {
     }
   };
 
-  if (loading) return <Loader />; 
+  if (loading) return <Loader />;
 
   return (
     <motion.div
